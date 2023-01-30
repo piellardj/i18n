@@ -119,3 +119,19 @@ button.action-button:hover, button.action-button:focus {
         background: #BF0000;
     }
 }
+
+#mode-chooser input {
+    display: none;
+}
+
+#mode-chooser label {
+    margin: 4px 8px;
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+#mode-chooser input:checked + label {
+    font-weight: bold;
+    opacity: 1;
+    text-decoration: underline;
+}

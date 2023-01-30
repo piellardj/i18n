@@ -1,3 +1,5 @@
+import { makeCompact, makeExpanded } from "./engine";
+import * as ModeChooser from "./mode-chooser";
 import { Section } from "./section";
 
 const contentsContainer = document.getElementById("contents");
@@ -5,28 +7,19 @@ if (!contentsContainer) {
     throw new Error("No contents.");
 }
 
-const compactSection = new Section();
+contentsContainer.appendChild(ModeChooser.container);
+
+const compactSection = new Section("compact", "Makes communication easier.", makeCompact);
 contentsContainer.appendChild(compactSection.container);
 
-compactSection.onActionCallbacks.push(() => {
-    const input = compactSection.getInput();
+const expandedSection = new Section("expanded", "M3s c11n e4r.", makeExpanded);
+contentsContainer.appendChild(expandedSection.container);
 
-    if (!input) {
-        compactSection.setErrorMessage("");
-        compactSection.setResult("");
-        return;
-    }
+function updateVisibility(): void {
+    const isCompactMode = ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT;
+    compactSection.visible = isCompactMode;
+    expandedSection.visible = !isCompactMode;
+}
+ModeChooser.addOnChangeListener(updateVisibility);
+updateVisibility();
 
-    const result = input.replace(/([a-zA-Z]|[à-ü]|[À-Ü]){3,}/g, (word: string) => {
-        const firstLetter = word[0];
-        const lastLetter = word[word.length - 1];
-        const innerLettersCount = word.length - 2;
-
-        if (typeof firstLetter === "undefined" || typeof lastLetter === "undefined" || innerLettersCount <= 0) {
-            console.warn(`Invalid word '${word}'.`);
-            return word;
-        }
-        return `${firstLetter}${innerLettersCount}${lastLetter}`;
-    });
-    compactSection.setResult(result);
-});

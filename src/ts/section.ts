@@ -1,14 +1,22 @@
+import * as Url from "./url-helper";
+
+type Callback = (input: string) => string;
+
 class Section {
     public readonly container: HTMLElement;
 
-    public readonly onActionCallbacks: VoidFunction[] = [];
+    private readonly callback: Callback;
 
     private readonly input: HTMLElement;
     private readonly button: HTMLButtonElement;
     private readonly errorMessages: HTMLElement;
     private readonly result: HTMLElement;
 
-    public constructor() {
+    public constructor(id: string, defaultInputText: string, callback: Callback) {
+        const idInUrl = `input_${id}`;
+
+        this.callback = callback;
+
         this.container = document.createElement("section");
 
         this.input = document.createElement("div");
@@ -24,9 +32,25 @@ class Section {
             this.button.className = "action-button";
             this.button.textContent = "Transform";
             this.button.addEventListener("click", () => {
-                for (const callback of this.onActionCallbacks) {
-                    callback();
+                const input = this.input.textContent;
+                let result = "";
+                if (!input) {
+                    this.setErrorMessage("");
+                    return;
+                } else {
+                    Url.setValue(idInUrl, input);
+
+                    try {
+                        result = this.callback(input);
+                    } catch (error: unknown) {
+                        if (error instanceof Error) {
+                            this.setErrorMessage(error.message);
+                        } else {
+                            this.setErrorMessage(`Unknown error: ${error}`);
+                        }
+                    }
                 }
+                this.result.textContent = result;
             });
             actionSection.appendChild(this.button);
 
@@ -40,18 +64,21 @@ class Section {
         this.result = document.createElement("div");
         this.result.className = "section result";
         this.container.appendChild(this.result);
+
+        const inputTextFromUrl = Url.getValue(idInUrl);
+        let inputText = defaultInputText;
+        if (inputTextFromUrl) {
+            inputText = inputTextFromUrl;
+        }
+        this.input.textContent = inputText;
     }
 
     public setErrorMessage(message: string): void {
         this.errorMessages.textContent = message;
     }
 
-    public getInput(): string | null {
-        return this.input.textContent;
-    }
-
-    public setResult(output: string): void {
-        this.result.textContent = output;
+    public set visible(visible: boolean) {
+        this.container.style.display = visible ? "" : "none";
     }
 }
 
