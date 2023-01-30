@@ -132,6 +132,7 @@ button.action-button:hover, button.action-button:focus {
     margin: 4px 8px;
     opacity: 0.75;
     cursor: pointer;
+    padding: 8px;
 }
 
 #mode-chooser input:checked + label {
