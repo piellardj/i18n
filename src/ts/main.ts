@@ -12,7 +12,14 @@ contentsContainer.appendChild(ModeChooser.container);
 const compactSection = new Section("compact", "Makes communication easier.", makeCompact);
 contentsContainer.appendChild(compactSection.container);
 
-const expandedSection = new Section("expanded", "M3s c11n e4r.", makeExpanded);
+const expandedInfoMessage = document.createElement("div");
+expandedInfoMessage.className = "info-messages";
+const expandedSection = new Section("expanded", "M3s c11n e4r.", (compactWord: string) => {
+    const result = makeExpanded(compactWord);
+    expandedInfoMessage.textContent = `Chose randomly out of ${result.possibilities} possibilities.`;
+    return result.output;
+});
+expandedSection.appendMiddleElement(expandedInfoMessage);
 contentsContainer.appendChild(expandedSection.container);
 
 function updateVisibility(): void {

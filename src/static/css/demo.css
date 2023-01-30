@@ -45,10 +45,14 @@ button.action-button:hover, button.action-button:focus {
     width: 100%;
     font-weight: bold;
     color: red;
+}
+.error-messages,
+.info-messages {
     margin: 16px auto 32px;
 }
 
-.error-messages:empty {
+.error-messages:empty,
+.info-messages:empty {
     margin: 0;
 }
 

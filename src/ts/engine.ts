@@ -20,11 +20,11 @@ function makeCompact(input: string): string {
 }
 
 class Dictionary {
-    private readonly wordsByFirstLetter: Record<string, string[]>
+    private readonly wordsByFirstLetter: Record<string, string[]>;
     public constructor(input: string) {
         this.wordsByFirstLetter = {};
 
-        const words = input.split("\n");
+        const words = input.split(/\r?\n/);
         for (let word of words) {
             word = word.toLowerCase();
             const firstLetter = word[0];
@@ -55,27 +55,39 @@ class Dictionary {
 
 let englishDictionary: Dictionary | null = null;
 
-function makeExpanded(input: string): string {
+type ExpansionResult = {
+    output: string;
+    possibilities: number;
+};
+
+function makeExpanded(input: string): ExpansionResult {
     let dictionary = englishDictionary;
     if (!dictionary) {
         dictionary = englishDictionary = new Dictionary(EnglishWords);
     }
 
     const regex = new RegExp(`${letterPattern}[0-9]+${letterPattern}`, "g");
-    return input.replace(regex, compactWord => {
+    let possibilities = 1;
+
+    const output = input.replace(regex, compactWord => {
         const firstLetter = compactWord[0]!;
         const lastLetter = compactWord[compactWord.length - 1]!;
         const length = parseInt(compactWord.slice(1, compactWord.length - 1)) + 2;
 
         const candidates = dictionary!.findWords(firstLetter, lastLetter, length);
+        possibilities *= Math.max(candidates.length, 1);
         console.log(candidates.join(", "));
-        const chosen = candidates[0];
+
+        const randomIndex = Math.floor(candidates.length * Math.random());
+        const chosen = candidates[randomIndex];
         if (!chosen) {
             return compactWord;
         }
         const chosenMiddle = chosen.slice(1, chosen.length - 1);
         return `${firstLetter}${chosenMiddle}${lastLetter}`;
     });
+
+    return { output, possibilities };
 }
 
 export {

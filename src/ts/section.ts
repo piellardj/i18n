@@ -8,8 +8,11 @@ class Section {
     private readonly callback: Callback;
 
     private readonly input: HTMLElement;
+
+    private readonly actionSection: HTMLElement;
     private readonly button: HTMLButtonElement;
     private readonly errorMessages: HTMLElement;
+
     private readonly result: HTMLElement;
 
     public constructor(id: string, defaultInputText: string, callback: Callback) {
@@ -24,9 +27,9 @@ class Section {
         this.input.contentEditable = "true";
         this.container.appendChild(this.input);
 
-        const actionSection = document.createElement("div");
+        this.actionSection = document.createElement("div");
         {
-            actionSection.className = "action-section";
+            this.actionSection.className = "action-section";
 
             this.button = document.createElement("button");
             this.button.className = "action-button";
@@ -52,14 +55,14 @@ class Section {
                 }
                 this.result.textContent = result;
             });
-            actionSection.appendChild(this.button);
+            this.actionSection.appendChild(this.button);
 
             this.errorMessages = document.createElement("div");
             this.errorMessages.className = "error-messages";
-            actionSection.appendChild(this.errorMessages);
+            this.actionSection.appendChild(this.errorMessages);
         }
 
-        this.container.appendChild(actionSection);
+        this.container.appendChild(this.actionSection);
 
         this.result = document.createElement("div");
         this.result.className = "section result";
@@ -79,6 +82,10 @@ class Section {
 
     public set visible(visible: boolean) {
         this.container.style.display = visible ? "" : "none";
+    }
+
+    public appendMiddleElement(element: HTMLElement): void {
+        this.actionSection.appendChild(element);
     }
 }
 
