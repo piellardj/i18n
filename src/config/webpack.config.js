@@ -37,13 +37,9 @@ function buildConfig(entryFilename /* string */, outputFilename /* string */, mi
                     ],
                 },
                 {
-                    test: /\.wgsl$/,
+                    test: /\.txt$/,
                     type: 'asset/source',
-                },
-                {
-                    test: /\.obj$/,
-                    type: 'asset/source',
-                },
+                }
             ]
         }
     };
