@@ -50,10 +50,18 @@ contentsContainer.appendChild(compactSection.container);
 contentsContainer.appendChild(expandedSection.container);
 
 function updateSectionsVisibility(): void {
-    const isCompactMode = ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT;
+    const isCompactMode = (ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT)
     compactSection.visible = isCompactMode;
     expandedSection.visible = !isCompactMode;
 }
-ModeChooser.addOnChangeListener(updateSectionsVisibility);
+ModeChooser.addOnChangeListener(() => {
+    const isCompactMode = (ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT);
+    if (isCompactMode) {
+        compactSection.inputText = expandedSection.outputText;
+    } else {
+        expandedSection.inputText = compactSection.outputText;
+    }
+    updateSectionsVisibility();
+});
 updateSectionsVisibility();
 

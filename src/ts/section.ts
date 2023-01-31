@@ -97,6 +97,10 @@ class Section {
         this.errorMessages.textContent = message;
     }
 
+    public get visible(): boolean {
+        return this.container.style.display !== "none";
+    }
+
     public set visible(visible: boolean) {
         if (visible) {
             this.process();
@@ -106,6 +110,17 @@ class Section {
 
     public appendMiddleElement(element: HTMLElement): void {
         this.actionSection.appendChild(element);
+    }
+
+    public get outputText(): string {
+        return this.result.textContent || "";
+    }
+
+    public set inputText(input: string) {
+        this.input.textContent = input;
+        if (this.visible) {
+            this.process();
+        }
     }
 }
 
