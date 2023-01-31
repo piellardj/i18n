@@ -1,6 +1,6 @@
 import * as Url from "./url-helper";
 
-type Callback = (input: string) => string;
+type Callback = (input: string) => DocumentFragment | string;
 
 class Section {
     public readonly container: HTMLElement;
@@ -36,7 +36,7 @@ class Section {
             this.button.textContent = "Transform";
             this.button.addEventListener("click", () => {
                 const input = this.input.textContent;
-                let result = "";
+                let result = null as string | DocumentFragment | null;
                 if (!input) {
                     this.setErrorMessage("");
                     return;
@@ -53,7 +53,13 @@ class Section {
                         }
                     }
                 }
-                this.result.textContent = result;
+
+                this.result.innerHTML = "";
+                if (typeof result === "string") {
+                    this.result.innerText = result;
+                } else if (result instanceof DocumentFragment) {
+                    this.result.appendChild(result);
+                }
             });
             this.actionSection.appendChild(this.button);
 

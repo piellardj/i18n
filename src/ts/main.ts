@@ -13,8 +13,23 @@ function createExpandedSection(): Section {
     infoMessage.className = "info-messages";
     const section = new Section("expanded", "M3s c11n e4r.", (compactWord: string) => {
         const result = makeExpanded(compactWord, languageSelect.value as Language);
-        infoMessage.textContent = `Chose randomly out of ${result.possibilities.toLocaleString()} possibilities.`;
-        return result.output;
+
+        let possibilities = 1;
+        for (const fragment of result.output) {
+            possibilities *= Math.max(1, fragment.possibilitiesCount);
+        }
+        infoMessage.textContent = `Chose randomly out of ${possibilities.toLocaleString()} possibilities.`;
+
+        const fragment = document.createDocumentFragment();
+        for (const textFragment of result.output) {
+            const element = document.createElement("span");
+            element.textContent = textFragment.text;
+            if (textFragment.title) {
+                element.title = textFragment.title;
+            }
+            fragment.appendChild(element);
+        }
+        return fragment;
     });
     section.appendMiddleElement(languageSelect);
     section.appendMiddleElement(infoMessage);

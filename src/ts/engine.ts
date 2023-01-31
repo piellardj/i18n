@@ -59,12 +59,49 @@ const dictionaries: Record<string, Dictionary> = {};
 enum Language {
     ENGLISH = "english",
     FRENCH = "french",
+}
+
+type TextFragment = {
+    text: string;
+    title?: string;
+    possibilitiesCount: number;
 };
 
 type ExpansionResult = {
-    output: string;
-    possibilities: number;
+    output: TextFragment[];
 };
+
+function expandWord(compactWord: string, dictionary: Dictionary): TextFragment {
+    const firstLetter = compactWord[0]!;
+    const lastLetter = compactWord[compactWord.length - 1]!;
+    const length = parseInt(compactWord.slice(1, compactWord.length - 1)) + 2;
+
+    const candidates = dictionary!.findWords(firstLetter, lastLetter, length);
+    console.log(candidates.join(", "));
+
+    const randomIndex = Math.floor(candidates.length * Math.random());
+    const chosen = candidates[randomIndex];
+    if (!chosen) {
+        return {
+            text: compactWord,
+            possibilitiesCount: 0,
+        };
+    }
+    const chosenMiddle = chosen.slice(1, chosen.length - 1);
+    const result: TextFragment = {
+        text: `${firstLetter}${chosenMiddle}${lastLetter}`,
+        possibilitiesCount: candidates.length,
+    };
+    if (candidates.length > 1) {
+        const maxLength = 3;
+        result.title = `or '${candidates.slice(0, maxLength).join("', or '")}`;
+        const otherPossibiliesCount = candidates.length - maxLength;
+        if (otherPossibiliesCount > 0) {
+            result.title += `', or ${otherPossibiliesCount.toLocaleString()} other things`;
+        }
+    }
+    return result;
+}
 
 function makeExpanded(input: string, language: Language): ExpansionResult {
     let dictionary = dictionaries[language];
@@ -80,27 +117,35 @@ function makeExpanded(input: string, language: Language): ExpansionResult {
     }
 
     const regex = new RegExp(`${letterPattern}[0-9]+${letterPattern}`, "g");
-    let possibilities = 1;
 
-    const output = input.replace(regex, compactWord => {
-        const firstLetter = compactWord[0]!;
-        const lastLetter = compactWord[compactWord.length - 1]!;
-        const length = parseInt(compactWord.slice(1, compactWord.length - 1)) + 2;
-
-        const candidates = dictionary!.findWords(firstLetter, lastLetter, length);
-        possibilities *= Math.max(candidates.length, 1);
-        console.log(candidates.join(", "));
-
-        const randomIndex = Math.floor(candidates.length * Math.random());
-        const chosen = candidates[randomIndex];
-        if (!chosen) {
-            return compactWord;
+    const output: TextFragment[] = [];
+    const matches = input.matchAll(regex);
+    let lastCursor = 0;
+    for (const match of matches) {
+        if (match) {
+            const cursor = match.index!;
+            const untouchedText = input.substring(lastCursor, cursor);
+            if (untouchedText) {
+                output.push({
+                    text: untouchedText,
+                    possibilitiesCount: 0,
+                });
+            }
+            const compactWord = match[0];
+            const result = expandWord(compactWord, dictionary);
+            lastCursor = cursor + compactWord.length;
+            output.push(result);
         }
-        const chosenMiddle = chosen.slice(1, chosen.length - 1);
-        return `${firstLetter}${chosenMiddle}${lastLetter}`;
-    });
+    }
 
-    return { output, possibilities };
+    if (lastCursor !== input.length) {
+        output.push({
+            text: input.substring(lastCursor),
+            possibilitiesCount: 0,
+        })
+    }
+
+    return { output };
 }
 
 export {
