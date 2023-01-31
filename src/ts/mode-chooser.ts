@@ -68,7 +68,7 @@ function setMode(mode: Mode): void {
 }
 
 const modeFromUrl = Url.getValue(URL_KEY);
-const initialMode = (modeFromUrl === Mode.MAKE_EXPANDED) ? Mode.MAKE_EXPANDED : Mode.MAKE_COMPACT;
+const initialMode = (modeFromUrl === Mode.MAKE_COMPACT) ? Mode.MAKE_COMPACT : Mode.MAKE_EXPANDED;
 setMode(initialMode);
 
 export {
