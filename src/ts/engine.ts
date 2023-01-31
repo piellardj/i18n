@@ -25,7 +25,7 @@ class Dictionary {
     public constructor(input: string) {
         this.wordsByFirstLetter = {};
 
-        const words = input.split(/\r?\n/);
+        const words = input.split(/\n/);
         for (let word of words) {
             word = word.toLowerCase();
             const firstLetter = word[0];
