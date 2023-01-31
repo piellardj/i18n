@@ -86,6 +86,10 @@ button.action-button:hover, button.action-button:focus {
     }
 }
 
+.action-section select {
+    margin: 16px;
+}
+
 .section::-webkit-scrollbar {
     width: 13px;
     height: 13px;

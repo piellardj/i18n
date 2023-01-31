@@ -1,6 +1,7 @@
 /// <reference types="./txt"/>
 
 import EnglishWords from "../dictionaries/english.txt";
+import FrenchWords from "../dictionaries/french.txt";
 
 const letterPattern = "([a-zA-Z]|[à-ü]|[À-Ü])";
 
@@ -53,17 +54,29 @@ class Dictionary {
     }
 }
 
-let englishDictionary: Dictionary | null = null;
+const dictionaries: Record<string, Dictionary> = {};
+
+enum Language {
+    ENGLISH = "english",
+    FRENCH = "french",
+};
 
 type ExpansionResult = {
     output: string;
     possibilities: number;
 };
 
-function makeExpanded(input: string): ExpansionResult {
-    let dictionary = englishDictionary;
+function makeExpanded(input: string, language: Language): ExpansionResult {
+    let dictionary = dictionaries[language];
     if (!dictionary) {
-        dictionary = englishDictionary = new Dictionary(EnglishWords);
+        let words: string;
+        if (language === Language.ENGLISH) {
+            words = EnglishWords;
+        } else {
+            words = FrenchWords;
+        }
+        dictionary = new Dictionary(words);
+        dictionaries[language] = dictionary;
     }
 
     const regex = new RegExp(`${letterPattern}[0-9]+${letterPattern}`, "g");
@@ -91,6 +104,7 @@ function makeExpanded(input: string): ExpansionResult {
 }
 
 export {
+    Language,
     makeExpanded,
     makeCompact,
 };

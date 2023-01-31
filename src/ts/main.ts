@@ -1,4 +1,5 @@
-import { makeCompact, makeExpanded } from "./engine";
+import { Language, makeCompact, makeExpanded } from "./engine";
+import * as LanguageChooser from "./language-chooser";
 import * as ModeChooser from "./mode-chooser";
 import { Section } from "./section";
 
@@ -7,13 +8,15 @@ function createCompactSection(): Section {
 }
 
 function createExpandedSection(): Section {
+    const languageSelect = LanguageChooser.languageSelect;
     const infoMessage = document.createElement("div");
     infoMessage.className = "info-messages";
     const section = new Section("expanded", "M3s c11n e4r.", (compactWord: string) => {
-        const result = makeExpanded(compactWord);
-        infoMessage.textContent = `Chose randomly out of ${result.possibilities} possibilities.`;
+        const result = makeExpanded(compactWord, languageSelect.value as Language);
+        infoMessage.textContent = `Chose randomly out of ${result.possibilities.toLocaleString()} possibilities.`;
         return result.output;
     });
+    section.appendMiddleElement(languageSelect);
     section.appendMiddleElement(infoMessage);
     return section;
 }
