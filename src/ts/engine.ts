@@ -142,7 +142,7 @@ function makeExpanded(input: string, language: Language): ExpansionResult {
         output.push({
             text: input.substring(lastCursor),
             possibilitiesCount: 0,
-        })
+        });
     }
 
     return { output };

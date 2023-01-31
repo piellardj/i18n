@@ -22,7 +22,7 @@ if (initialValueFromUrl) {
 
 languageSelect.addEventListener("change", () => {
     Url.setValue(URL_KEY, languageSelect.value);
-})
+});
 export {
     languageSelect,
 };
