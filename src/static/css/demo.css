@@ -37,7 +37,8 @@ button.action-button:hover {
     background: #26a69a;
 }
 
-button.action-button:hover, button.action-button:focus {
+button.action-button:hover,
+button.action-button:focus {
     outline: 0px;
 }
 
@@ -46,6 +47,7 @@ button.action-button:hover, button.action-button:focus {
     font-weight: bold;
     color: red;
 }
+
 .error-messages {
     margin: 16px auto 32px;
 }
@@ -72,14 +74,17 @@ button.action-button:hover, button.action-button:focus {
     #contents {
         max-width: 2000px;
     }
+
     #contents section {
         flex-flow: row nowrap;
         align-items: flex-start;
     }
+
     .action-section {
         margin-top: 16px;
         width: 300px;
     }
+
     .section {
         max-height: calc(100vh - 200px);
         overflow-y: auto;
@@ -114,15 +119,19 @@ button.action-button:hover, button.action-button:focus {
     .input {
         background: black;
     }
+
     .result {
         background: #202020;
     }
+
     .section {
         border-color: #535353;
     }
+
     .hovered {
         background: #0F594F;
     }
+
     .error {
         background: #BF0000;
     }
