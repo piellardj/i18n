@@ -11,7 +11,7 @@
     display: flex;
     width: 100%;
     flex-flow: column nowrap;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .input {
@@ -46,13 +46,11 @@ button.action-button:hover, button.action-button:focus {
     font-weight: bold;
     color: red;
 }
-.error-messages,
-.info-messages {
+.error-messages {
     margin: 16px auto 32px;
 }
 
-.error-messages:empty,
-.info-messages:empty {
+.error-messages:empty {
     margin: 0;
 }
 
@@ -71,10 +69,12 @@ button.action-button:hover, button.action-button:focus {
 }
 
 @media only screen and (min-width: 1200px) {
+    #contents {
+        max-width: 2000px;
+    }
     #contents section {
         flex-flow: row nowrap;
         align-items: flex-start;
-        max-width: 2000px;
     }
     .action-section {
         margin-top: 16px;
