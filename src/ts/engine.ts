@@ -80,24 +80,25 @@ function expandWord(compactWord: string, dictionary: Dictionary): TextFragment {
     console.log(candidates.join(", "));
 
     const randomIndex = Math.floor(candidates.length * Math.random());
-    const chosen = candidates[randomIndex];
-    if (!chosen) {
+    const chosenCandidate = candidates[randomIndex];
+    if (!chosenCandidate) {
         return {
             text: compactWord,
             possibilitiesCount: 0,
         };
     }
-    const chosenMiddle = chosen.slice(1, chosen.length - 1);
+    const chosenMiddle = chosenCandidate.slice(1, chosenCandidate.length - 1);
     const result: TextFragment = {
         text: `${firstLetter}${chosenMiddle}${lastLetter}`,
         possibilitiesCount: candidates.length,
     };
-    if (candidates.length > 1) {
+    const remainingCandidates = candidates.filter(candidate => candidate !== chosenCandidate);
+    if (remainingCandidates.length > 0) {
         const maxLength = 3;
-        result.title = `or '${candidates.slice(0, maxLength).join("', or '")}`;
-        const otherPossibiliesCount = candidates.length - maxLength;
+        result.title = `or \"${remainingCandidates.slice(0, maxLength).join("\", or \"")}\"`;
+        const otherPossibiliesCount = remainingCandidates.length - maxLength;
         if (otherPossibiliesCount > 0) {
-            result.title += `', or ${otherPossibiliesCount.toLocaleString()} other things`;
+            result.title += `, or ${otherPossibiliesCount.toLocaleString()} other things`;
         }
     }
     return result;
