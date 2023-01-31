@@ -35,7 +35,7 @@ class Section {
 
             this.button = document.createElement("button");
             this.button.className = "action-button";
-            this.button.title = "Transform"
+            this.button.title = "Transform";
             this.button.addEventListener("click", () => this.process());
             this.actionSection.appendChild(this.button);
 

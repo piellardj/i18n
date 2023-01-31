@@ -50,7 +50,7 @@ contentsContainer.appendChild(compactSection.container);
 contentsContainer.appendChild(expandedSection.container);
 
 function updateSectionsVisibility(): void {
-    const isCompactMode = (ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT)
+    const isCompactMode = (ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT);
     compactSection.visible = isCompactMode;
     expandedSection.visible = !isCompactMode;
 }
