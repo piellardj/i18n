@@ -77,7 +77,7 @@ function expandWord(compactWord: string, dictionary: Dictionary): TextFragment {
     const length = parseInt(compactWord.slice(1, compactWord.length - 1)) + 2;
 
     const candidates = dictionary!.findWords(firstLetter, lastLetter, length);
-    console.log(candidates.join(", "));
+    console.log(`'${compactWord}' could be: ${candidates.join(", ")}`);
 
     const randomIndex = Math.floor(candidates.length * Math.random());
     const chosenCandidate = candidates[randomIndex];
