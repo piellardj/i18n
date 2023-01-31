@@ -2,6 +2,22 @@ import { makeCompact, makeExpanded } from "./engine";
 import * as ModeChooser from "./mode-chooser";
 import { Section } from "./section";
 
+function createCompactSection(): Section {
+    return new Section("compact", "Makes communication easier.", makeCompact);
+}
+
+function createExpandedSection(): Section {
+    const infoMessage = document.createElement("div");
+    infoMessage.className = "info-messages";
+    const section = new Section("expanded", "M3s c11n e4r.", (compactWord: string) => {
+        const result = makeExpanded(compactWord);
+        infoMessage.textContent = `Chose randomly out of ${result.possibilities} possibilities.`;
+        return result.output;
+    });
+    section.appendMiddleElement(infoMessage);
+    return section;
+}
+
 const contentsContainer = document.getElementById("contents");
 if (!contentsContainer) {
     throw new Error("No contents.");
@@ -9,24 +25,16 @@ if (!contentsContainer) {
 
 contentsContainer.appendChild(ModeChooser.container);
 
-const compactSection = new Section("compact", "Makes communication easier.", makeCompact);
+const compactSection = createCompactSection();
+const expandedSection = createExpandedSection();
 contentsContainer.appendChild(compactSection.container);
-
-const expandedInfoMessage = document.createElement("div");
-expandedInfoMessage.className = "info-messages";
-const expandedSection = new Section("expanded", "M3s c11n e4r.", (compactWord: string) => {
-    const result = makeExpanded(compactWord);
-    expandedInfoMessage.textContent = `Chose randomly out of ${result.possibilities} possibilities.`;
-    return result.output;
-});
-expandedSection.appendMiddleElement(expandedInfoMessage);
 contentsContainer.appendChild(expandedSection.container);
 
-function updateVisibility(): void {
+function updateSectionsVisibility(): void {
     const isCompactMode = ModeChooser.getMode() === ModeChooser.Mode.MAKE_COMPACT;
     compactSection.visible = isCompactMode;
     expandedSection.visible = !isCompactMode;
 }
-ModeChooser.addOnChangeListener(updateVisibility);
-updateVisibility();
+ModeChooser.addOnChangeListener(updateSectionsVisibility);
+updateSectionsVisibility();
 
