@@ -4,7 +4,7 @@
     padding: 8px;
     margin: auto;
     box-sizing: border-box;
-    margin-top: 64px;
+    margin-top: 32px;
 }
 
 #contents section {
@@ -165,7 +165,7 @@ button.action-button:focus {
 }
 
 #mode-chooser {
-    margin-bottom: 32px;
+    margin-bottom: 16px;
 }
 
 #mode-chooser input {
@@ -173,10 +173,11 @@ button.action-button:focus {
 }
 
 #mode-chooser label {
-    margin: 4px 8px;
+    display: inline-block;
+    margin: 0 8px;
     opacity: 0.75;
     cursor: pointer;
-    padding: 8px;
+    padding: 6px;
 }
 
 #mode-chooser input:checked+label {
