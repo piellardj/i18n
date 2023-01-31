@@ -72,11 +72,14 @@ type ExpansionResult = {
 };
 
 function expandWord(compactWord: string, dictionary: Dictionary): TextFragment {
-    const firstLetter = compactWord[0]!;
-    const lastLetter = compactWord[compactWord.length - 1]!;
+    const firstLetter = compactWord[0];
+    const lastLetter = compactWord[compactWord.length - 1];
     const length = parseInt(compactWord.slice(1, compactWord.length - 1)) + 2;
 
-    const candidates = dictionary!.findWords(firstLetter, lastLetter, length);
+    if (!firstLetter || !lastLetter) {
+        throw new Error(`Compact word '${compactWord}' is too short.`);
+    }
+    const candidates = dictionary.findWords(firstLetter, lastLetter, length);
     console.log(`'${compactWord}' could be: ${candidates.join(", ")}`);
 
     const randomIndex = Math.floor(candidates.length * Math.random());
@@ -124,7 +127,11 @@ function makeExpanded(input: string, language: Language): ExpansionResult {
     let lastCursor = 0;
     for (const match of matches) {
         if (match) {
-            const cursor = match.index!;
+            if (typeof match.index === "undefined") {
+                throw new Error("No match index.");
+            }
+
+            const cursor = match.index;
             const untouchedText = input.substring(lastCursor, cursor);
             if (untouchedText) {
                 output.push({
