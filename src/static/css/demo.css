@@ -128,6 +128,10 @@ button.action-button:hover, button.action-button:focus {
     }
 }
 
+#mode-chooser {
+    margin-bottom: 32px;
+}
+
 #mode-chooser input {
     display: none;
 }
@@ -142,5 +146,6 @@ button.action-button:hover, button.action-button:focus {
 #mode-chooser input:checked + label {
     font-weight: bold;
     opacity: 1;
+    cursor: default;
     text-decoration: underline;
 }
