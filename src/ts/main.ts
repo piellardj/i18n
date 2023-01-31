@@ -33,6 +33,7 @@ function createExpandedSection(): Section {
     });
     section.appendMiddleElement(languageSelect);
     section.appendMiddleElement(infoMessage);
+    languageSelect.addEventListener("change", () => section.process());
     return section;
 }
 

@@ -7,6 +7,8 @@ class Section {
 
     private readonly callback: Callback;
 
+    private readonly idInUrl: string;
+
     private readonly input: HTMLElement;
 
     private readonly actionSection: HTMLElement;
@@ -16,7 +18,7 @@ class Section {
     private readonly result: HTMLElement;
 
     public constructor(id: string, defaultInputText: string, callback: Callback) {
-        const idInUrl = `input_${id}`;
+        this.idInUrl = `input_${id}`;
 
         this.callback = callback;
 
@@ -34,33 +36,7 @@ class Section {
             this.button = document.createElement("button");
             this.button.className = "action-button";
             this.button.textContent = "Transform";
-            this.button.addEventListener("click", () => {
-                const input = this.input.textContent;
-                let result = null as string | DocumentFragment | null;
-                if (!input) {
-                    this.setErrorMessage("");
-                    return;
-                } else {
-                    Url.setValue(idInUrl, input);
-
-                    try {
-                        result = this.callback(input);
-                    } catch (error: unknown) {
-                        if (error instanceof Error) {
-                            this.setErrorMessage(error.message);
-                        } else {
-                            this.setErrorMessage(`Unknown error: ${error}`);
-                        }
-                    }
-                }
-
-                this.result.innerHTML = "";
-                if (typeof result === "string") {
-                    this.result.innerText = result;
-                } else if (result instanceof DocumentFragment) {
-                    this.result.appendChild(result);
-                }
-            });
+            this.button.addEventListener("click", () => this.process());
             this.actionSection.appendChild(this.button);
 
             this.errorMessages = document.createElement("div");
@@ -74,7 +50,7 @@ class Section {
         this.result.className = "section result";
         this.container.appendChild(this.result);
 
-        const inputTextFromUrl = Url.getValue(idInUrl);
+        const inputTextFromUrl = Url.getValue(this.idInUrl);
         let inputText = defaultInputText;
         if (inputTextFromUrl) {
             inputText = inputTextFromUrl;
@@ -82,11 +58,42 @@ class Section {
         this.input.textContent = inputText;
     }
 
-    public setErrorMessage(message: string): void {
+    public process(): void {
+        const input = this.input.textContent;
+        let result = null as string | DocumentFragment | null;
+        if (!input) {
+            this.setErrorMessage("");
+            return;
+        } else {
+            Url.setValue(this.idInUrl, input);
+
+            try {
+                result = this.callback(input);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    this.setErrorMessage(error.message);
+                } else {
+                    this.setErrorMessage(`Unknown error: ${error}`);
+                }
+            }
+        }
+
+        this.result.innerHTML = "";
+        if (typeof result === "string") {
+            this.result.innerText = result;
+        } else if (result instanceof DocumentFragment) {
+            this.result.appendChild(result);
+        }
+    }
+
+    private setErrorMessage(message: string): void {
         this.errorMessages.textContent = message;
     }
 
     public set visible(visible: boolean) {
+        if (visible) {
+            this.process();
+        }
         this.container.style.display = visible ? "" : "none";
     }
 
