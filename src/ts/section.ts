@@ -56,6 +56,13 @@ class Section {
             inputText = inputTextFromUrl;
         }
         this.input.textContent = inputText;
+
+        this.input.addEventListener("keydown", (event: KeyboardEvent) => {
+            if (event.key === "Enter") {
+                this.process();
+                event.preventDefault();
+            }
+        });
     }
 
     public process(): void {
