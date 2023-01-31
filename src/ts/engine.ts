@@ -95,7 +95,7 @@ function expandWord(compactWord: string, dictionary: Dictionary): TextFragment {
     const remainingCandidates = candidates.filter(candidate => candidate !== chosenCandidate);
     if (remainingCandidates.length > 0) {
         const maxLength = 3;
-        result.title = `or \"${remainingCandidates.slice(0, maxLength).join("\", or \"")}\"`;
+        result.title = `or "${remainingCandidates.slice(0, maxLength).join("\", or \"")}"`;
         const otherPossibiliesCount = remainingCandidates.length - maxLength;
         if (otherPossibiliesCount > 0) {
             result.title += `, or ${otherPossibiliesCount.toLocaleString()} other things`;
