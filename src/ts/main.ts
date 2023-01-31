@@ -18,7 +18,7 @@ function createExpandedSection(): Section {
         for (const fragment of result.output) {
             possibilities *= Math.max(1, fragment.possibilitiesCount);
         }
-        infoMessage.textContent = `Randomly chose out of ${possibilities.toLocaleString()} possibilities.`;
+        infoMessage.textContent = `Random choice out of ${possibilities.toLocaleString()} possibilities.`;
 
         const fragment = document.createDocumentFragment();
         for (const textFragment of result.output) {
