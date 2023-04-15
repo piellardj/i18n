@@ -27,7 +27,7 @@ class Dictionary {
 
         const words = input.split(/\n/);
         for (let word of words) {
-            word = word.toLowerCase();
+            word = word.toLowerCase().trim();
             const firstLetter = word[0];
             if (typeof firstLetter === "string") {
                 let subDictionary = this.wordsByFirstLetter[firstLetter];
