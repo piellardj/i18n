@@ -10,6 +10,10 @@ const data = {
         "Only keep the first and last letters, and add the count of inner letters. Makes communication easier. M3s c11n e4r."
     ],
     githubProjectName: "i18n",
+    readme: {
+        filepath: path.join(__dirname, "..", "README.md"),
+        branchName: "main"
+    },
     additionalLinks: [],
     scriptFiles: [
         "script/main.js"
