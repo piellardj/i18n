@@ -67,8 +67,7 @@ var Language;
 (function (Language) {
     Language["ENGLISH"] = "english";
     Language["FRENCH"] = "french";
-})(Language || (Language = {}));
-exports.Language = Language;
+})(Language || (exports.Language = Language = {}));
 function expandWord(compactWord, dictionary) {
     const firstLetter = compactWord[0];
     const lastLetter = compactWord[compactWord.length - 1];
@@ -338,8 +337,7 @@ var Mode;
 (function (Mode) {
     Mode["MAKE_COMPACT"] = "0";
     Mode["MAKE_EXPANDED"] = "1";
-})(Mode || (Mode = {}));
-exports.Mode = Mode;
+})(Mode || (exports.Mode = Mode = {}));
 const URL_KEY = "mode";
 const onChangeListeners = [];
 function addOnChangeListener(callback) {
