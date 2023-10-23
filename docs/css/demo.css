@@ -18,7 +18,6 @@
     background: white;
     resize: none;
     outline: none;
-    padding: 8px;
 }
 
 button.action-button {
@@ -80,9 +79,12 @@ button.action-button:focus {
 }
 
 .result {
-    padding: 16px;
-    min-height: 32px;
     background: #eee
+}
+
+.result,
+.input {
+    padding: 16px;
 }
 
 .section {
